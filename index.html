@@ -1,0 +1,1105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LifeOS &bull; Projects Dashboard</title>
+    
+    <!-- Premium Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Chart.js, Tailwind CSS CDN, and Lucide Icons -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    
+
+    <link rel="stylesheet" href="tailwind.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="main-wrapper" style="width: 100%; display: flex; flex-direction: column; min-height: 100vh;">
+
+    <!-- Global Desktop Header -->
+    <header class="global-header">
+        <a href="https://portal.roboshadow.com/" target="_blank" class="header-link" style="border-right: 2px solid var(--accent-cyan);"><i data-lucide="shield" class="w-5 h-5"></i> RoboShadow</a>
+        <a href="https://google.com" target="_blank" class="header-link"><i data-lucide="search" class="w-5 h-5"></i> Google</a>
+        <a href="https://gemini.google.com" target="_blank" class="header-link"><i data-lucide="sparkles" class="w-5 h-5"></i> Gemini</a>
+        <a href="https://gmail.com" target="_blank" class="header-link"><i data-lucide="mail" class="w-5 h-5"></i> Gmail</a>
+        <a href="https://deepai.org/" target="_blank" class="header-link"><i data-lucide="palette" class="w-5 h-5"></i> DeepAI</a>
+    </header>
+
+    <!-- Mobile Header -->
+    <div class="mobile-header">
+        <div style="font-family: var(--font-mono); font-size: 14px; color: var(--accent-cyan); display: flex; align-items: center; gap: 8px; font-weight: 700; letter-spacing: 0.1em;">
+            <span style="width:6px; height:6px; background:var(--accent-cyan); border-radius:50%; box-shadow:0 0 8px var(--accent-cyan);"></span>
+            <span class="live-time-display">00:00:00</span>
+        </div>
+        <div style="display: flex; gap: 16px; margin-left: auto; margin-right: 20px;">
+             <a href="https://portal.roboshadow.com/" target="_blank" style="color: var(--color-text-secondary);"><i data-lucide="shield" class="w-5 h-5"></i></a>
+             <a href="https://google.com" target="_blank" style="color: var(--color-text-secondary);"><i data-lucide="search" class="w-5 h-5"></i></a>
+             <a href="https://gemini.google.com" target="_blank" style="color: var(--color-text-secondary);"><i data-lucide="sparkles" class="w-5 h-5"></i></a>
+             <a href="https://gmail.com" target="_blank" style="color: var(--color-text-secondary);"><i data-lucide="mail" class="w-5 h-5"></i></a>
+             <a href="https://deepai.org/" target="_blank" style="color: var(--color-text-secondary);"><i data-lucide="palette" class="w-5 h-5"></i></a>
+             <button onclick="toggleTheme()" style="background:none; border:none; cursor:pointer; color:var(--color-text-secondary); display:flex; align-items:center;" title="Toggle theme"><i data-lucide="sun" id="mobile-theme-icon" class="w-5 h-5"></i></button>
+        </div>
+        <button class="menu-toggle" onclick="toggleSidebar()" style="background:none; border:none; color:#fff; font-size:24px;">☰</button>
+    </div>
+
+    <!-- Sidebar Navigation -->
+    <nav id="sidebar">
+        <div class="brand-logo" style="padding-top: 12px; padding-bottom: 16px;">
+            <i data-lucide="layout-dashboard" class="w-6 h-6" style="color: var(--accent-cyan);"></i>
+            <h1>Life<span style="color: var(--color-text-muted);">OS</span></h1>
+        </div>
+        
+        <div class="user-widget">
+            <div class="user-avatar">AC</div>
+            <div class="user-info" style="display:flex; flex-direction:column;">
+                <span style="font-size: 14px; font-weight: 600;">Alex Carter</span>
+                <span style="font-size: 11px; color: var(--color-text-secondary);">Product Manager | Tech Lead</span>
+            </div>
+        </div>
+
+        <div class="nav-links">
+            <button onclick="switchTab('dashboard')" class="nav-item active" id="nav-dashboard">
+                <i data-lucide="home" class="w-4 h-4"></i> Dashboard
+            </button>
+            <div style="font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-text-muted); margin: 16px 16px 6px 16px;">Professional OS</div>
+            <button onclick="switchTab('prof-synthesis')" class="nav-item" id="nav-prof-synthesis">
+                <i data-lucide="cpu" class="w-4 h-4"></i> Projects
+            </button>
+            <button onclick="switchTab('prof-skills')" class="nav-item" id="nav-prof-skills">
+                <i data-lucide="book-open" class="w-4 h-4"></i> Skills & Growth
+            </button>
+            <button onclick="switchTab('prof-ventures')" class="nav-item" id="nav-prof-ventures">
+                <i data-lucide="rocket" class="w-4 h-4"></i> Initiatives
+            </button>
+            <button onclick="switchTab('prof-systems')" class="nav-item" id="nav-prof-systems">
+                <i data-lucide="sliders" class="w-4 h-4"></i> Tools & Resources
+            </button>
+            <div style="font-size: 9px; color: var(--color-text-muted); padding: 8px 16px; font-style: italic; border-top: 1px solid var(--border-color); margin-top: 12px; opacity: 0.6;">
+                Note: Look into Skills Matrix later.
+            </div>
+            <div style="font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-text-muted); margin: 16px 16px 6px 16px;">Life OS</div>
+            <button onclick="switchTab('security')" class="nav-item" id="nav-security">
+                <i data-lucide="shield" class="w-4 h-4 text-cyber-teal"></i> Security
+            </button>
+            <button onclick="switchTab('ergonomics')" class="nav-item" id="nav-ergonomics">
+                <i data-lucide="activity" class="w-4 h-4 text-cyber-emeraldLight"></i> Ergonomics
+            </button>
+            <button onclick="switchTab('habits')" class="nav-item" id="nav-habits">
+                <i data-lucide="calendar" class="w-4 h-4"></i> Focus &amp; Habits
+            </button>
+        </div>
+
+        <!-- Theme Toggle -->
+        <button class="theme-toggle-btn" id="theme-toggle-btn" onclick="toggleTheme()">
+            <i data-lucide="sun" class="w-4 h-4" id="theme-icon"></i>
+            <span id="theme-label">Light Mode</span>
+        </button>
+    </nav>
+
+    <main id="content-wrapper">
+
+        <!-- ================= DASHBOARD TAB ================= -->
+        <section id="dashboard-tab" class="tab-section active">
+            <!-- Dynamic Job Spotlight Container -->
+            <div id="job-spotlight-container">
+                <!-- Cloned priority job application card will be injected here -->
+            </div>
+
+            <!-- Top Job Opportunity Alert -->
+            <div class="glass-card" style="padding: 12px 18px; border-left: 4px solid var(--accent-indigo); background: rgba(99, 102, 241, 0.05); margin-bottom: 4px; display: flex; flex-direction: column; gap: 8px; border-radius: 12px;">
+                <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <span style="font-size: 18px;">🎯</span>
+                        <div style="display: flex; flex-direction: column;">
+                            <span style="font-size: 13px; font-weight: 700; color: var(--color-text-primary);">Top Priority Job: Acme Corp — Senior Software Engineer</span>
+                            <span style="font-size: 11px; color: var(--color-text-secondary);">Highest offer probability. Leverage 8+ years accounting experience. Hybrid, LA.</span>
+                        </div>
+                    </div>
+                </div>
+                <div style="margin-top: 4px; font-size: 10px; display: flex; gap: 8px; border-top: 1px dashed rgba(255,255,255,0.05); padding-top: 4px; align-items: center;">
+                    <a href="#" target="_blank" style="color: var(--accent-cyan); text-decoration: none;">📄 Summary</a>
+                    <a href="https://floqast.com/careers" target="_blank" style="color: var(--accent-cyan); text-decoration: none; display: flex; align-items: center; gap: 4px;">🌐 Project Link <i data-lucide="external-link" class="w-3 h-3"></i></a>
+                </div>
+            </div>
+
+            <div class="grid-2" style="gap: 16px;">
+                <!-- Left Column: Compact Project Tracker -->
+                <div class="glass-panel" style="padding: 16px; border-top: 4px solid var(--accent-cyan); background: linear-gradient(180deg, rgba(6, 182, 212, 0.08) 0%, rgba(6, 182, 212, 0.02) 100%);">
+                    <h3 style="font-family:var(--font-display); font-size:16px; font-weight:700; margin-bottom:12px; display:flex; align-items:center; gap:6px;">
+                        <i data-lucide="briefcase" class="w-4 h-4 text-cyber-teal"></i> Projects &amp; Job Search
+                    </h3>
+                    
+                    <div style="display:flex; flex-direction:column; gap:8px;">
+                        <!-- Top Priority Project (Always Visible) -->
+                        <div id="priority-job-container" style="display:flex; flex-direction:column; gap:8px;"></div>
+                        <!-- Other Jobs (Expanded by Default) -->
+                        <details style="margin-top: 4px; cursor: pointer;" class="group" open>
+                            <summary style="font-size: 11px; font-weight: 700; color: var(--accent-cyan); outline: none; margin-bottom: 6px; user-select: none;">📂 Active Projects</summary>
+                            <div id="open-jobs-container" style="display:flex; flex-direction:column; gap:8px; margin-top:4px;"></div>
+                        </details>
+
+                        <!-- Submitted Applications (Collapsed by Default) -->
+                        <details style="margin-top: 4px; cursor: pointer;">
+                            <summary style="font-size: 11px; font-weight: 700; color: var(--accent-emerald); outline: none; margin-bottom: 6px; user-select: none;">✅ Pending Review</summary>
+                            <div id="submitted-jobs-container" style="display:flex; flex-direction:column; gap:8px; margin-top:4px;"></div>
+                        </details>
+
+                        <!-- Secondary Cyber Pipeline -->
+                        <details style="margin-top: 4px; cursor: pointer;">
+                            <summary style="font-size: 11px; font-weight: 700; color: var(--accent-cyan); outline: none; margin-bottom: 6px; user-select: none;">🛡️ Secondary Initiatives</summary>
+                            <div id="secondary-jobs-container" style="display:flex; flex-direction:column; gap:8px; margin-top:4px;"></div>
+                        </details>
+
+                        <!-- Non-Cyber Backup Pipeline -->
+                        <details style="margin-top: 4px; cursor: pointer;">
+                            <summary style="font-size: 11px; font-weight: 700; color: var(--accent-indigo); outline: none; margin-bottom: 6px; user-select: none;">🛠️ Backlog Tasks</summary>
+                            <div id="backup-jobs-container" style="display:flex; flex-direction:column; gap:8px; margin-top:4px;"></div>
+                        </details>
+
+                        <!-- Closed / Past Applications -->
+                        <details style="margin-top: 6px; cursor: pointer;">
+                            <summary style="font-style: italic; font-size: 11px; font-weight: 700; color: var(--color-text-secondary); outline: none; margin-bottom: 6px; user-select: none;">📁 Completed / Archived</summary>
+                            <div id="closed-jobs-container" style="display:flex; flex-direction:column; gap:10px; margin-top:6px;"></div>
+                        </details>
+
+                        <!-- Skipped Applications -->
+                        <details id="skipped-applications-section" style="margin-top: 6px; cursor: pointer;">
+                            <summary style="font-style: italic; font-size: 11px; font-weight: 700; color: var(--color-text-secondary); outline: none; margin-bottom: 6px; user-select: none;">⏭️ Skipped Applications</summary>
+                            <div id="skipped-jobs-list" style="display: flex; flex-direction: column; gap: 10px; margin-top: 6px;">
+                                <!-- Skipped jobs move here -->
+                            </div>
+                        </details>
+                    </div>
+                </div>
+
+                <!-- Right Column: Compact Info & Tools -->
+                <div style="display:flex; flex-direction:column; gap:16px;">
+                    <!-- Development Roadmap Widget -->
+                    <div class="glass-panel" style="padding: 16px; border-left:3px solid var(--accent-emerald); background: linear-gradient(135deg, rgba(16, 185, 129, 0.03) 0%, transparent 100%);">
+                        <span style="font-size:9px; font-weight:700; color:var(--accent-emerald); text-transform:uppercase; letter-spacing:0.08em;">Roadmap</span>
+                        <h3 style="font-family:var(--font-display); font-size:16px; font-weight:700; margin-top:2px;">LifeOS Development & To-Do</h3>
+                        <div style="font-size:12px; color:var(--color-text-secondary); margin-top:6px; line-height:1.4;">
+                            Track system upgrades, UI refactoring, and feature rollouts here.
+                        </div>
+                        <div style="margin-top: 8px; font-size: 11px; color: var(--color-text-primary); display: flex; flex-direction: column; gap: 6px; padding: 8px; background: rgba(0,0,0,0.2); border-radius: 8px; border: 1px solid var(--border-color);">
+                            <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;"><input type="checkbox" style="accent-color: var(--accent-emerald);"> Modularize internal scripts</label>
+                            <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;"><input type="checkbox" style="accent-color: var(--accent-emerald);"> Add habit tracking heatmap</label>
+                        </div>
+                        <div style="display:flex; gap:6px; margin-top:12px;">
+                            <a href="LifeOS_Roadmap.md" target="_blank" class="action-button primary" style="background: linear-gradient(135deg, var(--accent-emerald) 0%, rgba(16, 185, 129, 0.8) 100%); padding:6px 10px; font-size:11px; text-align:center; height:32px; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);">Edit Full Roadmap &rarr;</a>
+                        </div>
+                    </div>
+
+                    <!-- Business Cards -->
+                    <div class="glass-panel" style="padding: 16px; border-left:3px solid var(--accent-indigo); background: linear-gradient(135deg, rgba(99, 102, 241, 0.03) 0%, transparent 100%);">
+                        <span style="font-size:9px; font-weight:700; color:var(--accent-indigo); text-transform:uppercase; letter-spacing:0.08em;">Consultancy</span>
+                        <h3 style="font-family:var(--font-display); font-size:16px; font-weight:700; margin-top:2px;">My Portfolio Links</h3>
+                        <div style="display:flex; gap:6px; margin-top:10px;">
+                            <a href="#" target="_blank" class="action-button secondary" style="padding:6px 10px; font-size:10px; text-align:center; height:28px;">👁 Front</a>
+                            <a href="#" target="_blank" class="action-button secondary" style="padding:6px 10px; font-size:10px; text-align:center; height:28px;">👁 Back</a>
+                            <a href="#" target="_blank" class="action-button secondary" style="padding:6px 10px; font-size:10px; text-align:center; height:28px;">🖨 Print</a>
+                        </div>
+                    </div>
+
+                    <div id="events-container" style="display: flex; flex-direction: column; gap: 12px;"></div>
+                        <div style="margin-top: 8px; font-size: 11px; color: var(--color-text-muted);">
+                            <strong>Hackathon:</strong> Agents League (ends June 14)<br>
+                            <strong>Perks:</strong> Free Certification Exam upon playlist completion.<br>
+                        </div>
+                        <a href="https://aiskillsnavigator.microsoft.com/events/AISF2026" target="_blank" class="action-button primary" style="margin-top: 10px; padding: 6px 12px; font-size: 11px; height: 32px;">Enter Festival &rarr;</a>
+                    </div>
+
+                    
+                        <div style="margin-top: 8px; font-size: 11px; color: var(--color-text-muted);">
+                            <strong>Tickets:</strong> GA: $25. Women in Tech: $10. Door: $40.<br>
+                            <strong>Inclusions:</strong> Hosted appetizers. Digital ticket required.<br>
+                            <strong>Sponsors:</strong> VCMatch (50% off w/ code NERDNEWS), TriNet
+                        </div>
+                        <details style="margin-top: 8px; cursor: pointer;">
+                            <summary style="font-size: 10px; font-weight: 700; color: var(--accent-emerald); outline: none;">Future Events</summary>
+                            <div style="font-size: 10px; color: var(--color-text-secondary); padding-top: 4px; line-height: 1.4;">
+                                &bull; Startup Arena: Wed, July 15, 2026 (Santa Monica)<br>
+                                &bull; Demo Day LA: Thu, August 13, 2026 (Los Angeles)
+                            </div>
+                        </details>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Subscription Audit Section -->
+            <div class="glass-panel" style="padding: 16px; border-top: 4px solid var(--accent-amber); background: linear-gradient(180deg, rgba(245, 158, 11, 0.08) 0%, rgba(245, 158, 11, 0.02) 100%);">
+                <h3 style="font-family:var(--font-display); font-size:16px; font-weight:700; margin-bottom:12px; display:flex; align-items:center; gap:6px;">
+                    <i data-lucide="credit-card" class="w-4 h-4 text-cyber-amber"></i> Subscription & Expense Audit
+                </h3>
+                <div id="subscription-active-list" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px;">
+                    <div class="routine-item" onclick="toggleErgonomicsCheck(this)">
+                        <div class="checkbox-container"></div>
+                        <div style="display:flex; flex-direction:column; gap:2px;">
+                            <span style="font-size: 13px; font-weight: 600;">Gmail: [Next Account Sweep]</span>
+                            <span style="font-size: 10px; color: var(--color-text-secondary);">Check remaining owned Gmail accounts for subs.</span>
+                        </div>
+                    </div>
+                    <div class="routine-item" onclick="toggleErgonomicsCheck(this)">
+                        <div class="checkbox-container"></div>
+                        <div style="display:flex; flex-direction:column; gap:2px;">
+                            <span style="font-size: 13px; font-weight: 600;">Bank Statement Review</span>
+                            <span style="font-size: 10px; color: var(--color-text-secondary);">Identify non-essential recurring transactions.</span>
+                        </div>
+                    </div>
+                </div>
+
+                <details id="subscription-completed-section" style="margin-top: 12px; cursor: pointer;" class="group">
+                    <summary style="font-size: 11px; font-weight: 700; color: var(--color-text-muted); outline: none; margin-bottom: 6px; user-select: none;">📁 Completed Audit Items</summary>
+                    <div id="subscription-completed-list" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; margin-top: 4px;">
+                        <div class="routine-item checked" onclick="toggleErgonomicsCheck(this)">
+                            <div class="checkbox-container"></div>
+                            <div style="display:flex; flex-direction:column; gap:2px;">
+                                <span style="font-size: 13px; font-weight: 600;">Gmail: keith.tibbitts@gmail.com</span>
+                                <span style="font-size: 10px; color: var(--accent-emerald);">CLEARED - June 9</span>
+                            </div>
+                        </div>
+                    </div>
+                </details>
+            </div>
+        </section>
+
+        <!-- ================= PROFESSIONAL SYNTHESIS TAB ================= -->
+        <section id="prof-synthesis-tab" class="tab-section">
+            <div style="margin-bottom: 8px;">
+                <h2 style="font-family: var(--font-display); font-size: 32px; font-weight: 800;">The Blueprint</h2>
+                <p style="color: var(--color-text-secondary); font-size: 14px; margin-top: 4px;">A consolidated overview of your strategic advantages, synthesized from 10 distinct knowledge domains ranging from AI architecture to low-cost entrepreneurship.</p>
+            </div>
+
+            <!-- Stats Grid -->
+            <div class="grid-4">
+                <div class="glass-panel stat-card cyan">
+                    <span class="stat-label">AI Wage Premium</span>
+                    <span class="stat-value" style="color: var(--accent-cyan);">+23%</span>
+                    <div class="stat-footer">Vs. 8% for a Bachelor's Degree</div>
+                </div>
+                <div class="glass-panel stat-card amber">
+                    <span class="stat-label">Venture Opportunities</span>
+                    <span class="stat-value" style="color: var(--accent-amber);">32</span>
+                    <div class="stat-footer">14 AI Models + 18 Low-Cost Paths</div>
+                </div>
+                <div class="glass-panel stat-card indigo">
+                    <span class="stat-label">Free Training</span>
+                    <span class="stat-value" style="color: var(--accent-indigo);">7 Paths</span>
+                    <div class="stat-footer">IBM enterprise-grade certs</div>
+                </div>
+                <div class="glass-panel stat-card emerald">
+                    <span class="stat-label">Hidden Leverage</span>
+                    <span class="stat-value" style="color: var(--accent-emerald);">101</span>
+                    <div class="stat-footer">Untapped gov/non-profit services</div>
+                </div>
+            </div>
+
+            <div class="grid-2">
+                <!-- Paradigm Shift Panel -->
+                <div class="glass-panel" style="padding: 24px;">
+                    <h3 style="font-family:var(--font-display); font-size:20px; font-weight:700; margin-bottom:16px; display:flex; align-items:center; gap:8px;">
+                        <i data-lucide="refresh-cw" class="w-5 h-5 text-accent-indigo"></i> Core Paradigm Shifts
+                    </h3>
+                    <div style="display:flex; flex-direction:column; gap:16px;">
+                        <div class="glass-card" style="border-left: 4px solid var(--accent-indigo); background: rgba(99,102,241,0.03);">
+                            <div style="font-weight:700; font-size:14px; margin-bottom:4px; color: var(--color-text-primary);">1. You're Automating the Wrong Layer</div>
+                            <p style="font-size:12px; color:var(--color-text-secondary); line-height:1.5;">
+                                Multi-agent frameworks are often overkill. The future is "The Architecture of Dialogue"—using simple text folders and markdown files for AI context. (Used by 30,000+ builders).
+                            </p>
+                        </div>
+                        <div class="glass-card" style="border-left: 4px solid var(--accent-cyan); background: rgba(6,182,212,0.03);">
+                            <div style="font-weight:700; font-size:14px; margin-bottom:4px; color: var(--color-text-primary);">2. The Agentic Era (Google I/O 2026)</div>
+                            <p style="font-size:12px; color:var(--color-text-secondary); line-height:1.5;">
+                                AI is moving from text response to action execution. AlphaEarth and Isomorphic labs represent massive scale, but "Ask Maps" and "Ask YouTube" show everyday agentic behavior.
+                            </p>
+                        </div>
+                        <div class="glass-card" style="border-left: 4px solid var(--accent-emerald); background: rgba(16,185,129,0.03);">
+                            <div style="font-weight:700; font-size:14px; margin-bottom:4px; color: var(--color-text-primary);">3. Thoughts Without Words</div>
+                            <p style="font-size:12px; color:var(--color-text-secondary); line-height:1.5;">
+                                The loss of an internal monologue isn't a deficit; it's pure conceptual processing. Ideas contain meaning without needing verbalization, optimizing speed of thought.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Items -->
+                <div class="glass-panel" style="padding: 24px;">
+                    <h3 style="font-family:var(--font-display); font-size:20px; font-weight:700; margin-bottom:16px; display:flex; align-items:center; gap:8px;">
+                        <i data-lucide="target" class="w-5 h-5 text-cyber-teal"></i> Next Actions
+                    </h3>
+                    <div style="display:flex; flex-direction:column; gap:12px;">
+                        <div class="routine-item" onclick="toggleErgonomicsCheck(this)">
+                            <div class="checkbox-container"></div>
+                            <div style="display:flex; flex-direction:column; gap:2px;">
+                                <span style="font-size: 14px; font-weight: 600;">Skills Matrix Mapping</span>
+                                <span style="font-size: 11px; color: var(--color-text-secondary);">Map intrinsic strengths on the Skills Matrix.</span>
+                            </div>
+                        </div>
+                        <div class="routine-item" onclick="toggleErgonomicsCheck(this)">
+                            <div class="checkbox-container"></div>
+                            <div style="display:flex; flex-direction:column; gap:2px;">
+                                <span style="font-size: 14px; font-weight: 600;">Skills & Growth Certification Selection</span>
+                                <span style="font-size: 11px; color: var(--color-text-secondary);">Select an IBM certification path (Skills & Growth).</span>
+                            </div>
+                        </div>
+                        <div class="routine-item" onclick="toggleErgonomicsCheck(this)">
+                            <div class="checkbox-container"></div>
+                            <div style="display:flex; flex-direction:column; gap:2px;">
+                                <span style="font-size: 14px; font-weight: 600;">Venture Model Analysis</span>
+                                <span style="font-size: 11px; color: var(--color-text-secondary);">Analyze AI vs Boring business models.</span>
+                            </div>
+                        </div>
+                        <div class="routine-item" onclick="toggleErgonomicsCheck(this)">
+                            <div class="checkbox-container"></div>
+                            <div style="display:flex; flex-direction:column; gap:2px;">
+                                <span style="font-size: 14px; font-weight: 600;">Government Leverage Claiming</span>
+                                <span style="font-size: 11px; color: var(--color-text-secondary);">Claim missing money via Gov Services protocol.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= SKILL FORGE TAB ================= -->
+        <section id="prof-skills-tab" class="tab-section">
+            <div style="margin-bottom: 8px;">
+                <h2 style="font-family: var(--font-display); font-size: 32px; font-weight: 800;">The Skills & Growth</h2>
+                <p style="color: var(--color-text-secondary); font-size: 14px; margin-top: 4px;">The degree premium is collapsing. Focus on hyper-targeted skill acquisition. A skill learned in 3 months is now worth nearly 3x more than a 4-year degree.</p>
+            </div>
+
+            <div class="grid-3">
+                <!-- Chart Panel -->
+                <div class="glass-panel" style="padding: 24px;">
+                    <h3 style="font-family:var(--font-display); font-size:18px; font-weight:700; margin-bottom:16px;">The Wage Premium Shift (2026)</h3>
+                    <div class="chart-container" style="position: relative; width: 100%; height: 260px;">
+                        <canvas id="premiumChart"></canvas>
+                    </div>
+                    <p style="font-size: 12px; color: var(--color-text-secondary); line-height: 1.5; margin-top: 16px;">
+                        Data indicates a massive shift: AI skills yield a 23% wage premium, compared to just 8% for a standard Bachelor's degree. <em>Insight: You don't need to learn to code. Example: A financial compliance officer learned AI risk vocabulary and became an AI Auditor. Change your value proposition, not your career.</em>
+                    </p>
+                </div>
+
+                <!-- IBM Courses Panel -->
+                <div class="glass-panel" style="padding: 24px; display: flex; flex-direction: column;">
+                    <h3 style="font-family:var(--font-display); font-size:18px; font-weight:700; color: var(--accent-indigo); margin-bottom:8px;">The IBM Blueprint</h3>
+                    <p style="font-size: 12px; color: var(--color-text-secondary); margin-bottom: 16px;">IBM removed degree requirements from 50% of their roles and built 7 free courses to pipeline talent. 16M+ users, $0 cost.</p>
+                    
+                    <div style="display: flex; flex-direction: column; gap: 10px; overflow-y: auto; flex-grow: 1; max-height: 240px; padding-right: 4px;">
+                        <!-- Course Items -->
+                        <div class="glass-card" style="padding: 12px; border-left: 3px solid var(--accent-indigo); background: rgba(99,102,241,0.02); display: flex; flex-direction: column; gap: 4px;">
+                            <div style="display:flex; justify-content:space-between; align-items:center;">
+                                <span style="font-weight: 700; font-size: 13px; color: var(--color-text-primary);">1. Artificial Intelligence</span>
+                                <span style="font-size: 9px; font-weight: 700; padding: 2px 6px; border-radius: 4px; background: rgba(99, 102, 241, 0.15); color: var(--accent-indigo);">High Demand</span>
+                            </div>
+                            <p style="font-size: 11px; color: var(--color-text-secondary);">Foundations, Ethics, and application frameworks.</p>
+                        </div>
+                        <div class="glass-card" style="padding: 12px; border-left: 3px solid var(--accent-cyan); background: rgba(6,182,212,0.02); display: flex; flex-direction: column; gap: 4px;">
+                            <div style="display:flex; justify-content:space-between; align-items:center;">
+                                <span style="font-weight: 700; font-size: 13px; color: var(--color-text-primary);">2. Data Science</span>
+                                <span style="font-size: 9px; font-weight: 700; padding: 2px 6px; border-radius: 4px; background: rgba(6, 182, 212, 0.15); color: var(--accent-cyan);">Analytical</span>
+                            </div>
+                            <p style="font-size: 11px; color: var(--color-text-secondary);">Processing, visualizing, and drawing insights from large datasets.</p>
+                        </div>
+                        <div class="glass-card" style="padding: 12px; border-left: 3px solid var(--accent-rose); background: rgba(239,68,68,0.02); display: flex; flex-direction: column; gap: 4px;">
+                            <div style="display:flex; justify-content:space-between; align-items:center;">
+                                <span style="font-weight: 700; font-size: 13px; color: var(--color-text-primary);">3. Cyber Security</span>
+                                <span style="font-size: 9px; font-weight: 700; padding: 2px 6px; border-radius: 4px; background: rgba(239, 68, 68, 0.15); color: var(--accent-rose);">Defensive</span>
+                            </div>
+                            <p style="font-size: 11px; color: var(--color-text-secondary);">Protecting networks, risk assessment, and incident response.</p>
+                        </div>
+                        <div class="glass-card" style="padding: 12px; border-left: 3px solid var(--accent-emerald); background: rgba(16,185,129,0.02); display: flex; flex-direction: column; gap: 4px;">
+                            <div style="display:flex; justify-content:space-between; align-items:center;">
+                                <span style="font-weight: 700; font-size: 13px; color: var(--color-text-primary);">4. Cloud Computing</span>
+                                <span style="font-size: 9px; font-weight: 700; padding: 2px 6px; border-radius: 4px; background: rgba(16, 185, 129, 0.15); color: var(--accent-emerald);">Infrastructure</span>
+                            </div>
+                            <p style="font-size: 11px; color: var(--color-text-secondary);">Architecture, deployment, and management of cloud services.</p>
+                        </div>
+                        <div class="glass-card" style="padding: 12px; border-left: 3px solid var(--accent-amber); background: rgba(245,158,11,0.02); display: flex; flex-direction: column; gap: 4px;">
+                            <div style="display:flex; justify-content:space-between; align-items:center;">
+                                <span style="font-weight: 700; font-size: 13px; color: var(--color-text-primary);">5-7. Professional Core</span>
+                                <span style="font-size: 9px; font-weight: 700; padding: 2px 6px; border-radius: 4px; background: rgba(245, 158, 11, 0.15); color: var(--accent-amber);">Soft Skills</span>
+                            </div>
+                            <p style="font-size: 11px; color: var(--color-text-secondary);">Agile methodologies, design thinking, and professional communication.</p>
+                        </div>
+                    </div>
+                    
+                    <a href="https://skillsbuild.org/" target="_blank" class="action-button secondary" style="margin-top: 16px;">
+                        SkillsBuild.org Pathway
+                    </a>
+                </div>
+
+                <!-- Microsoft AI Skills Festival Panel -->
+                <div class="glass-panel" style="padding: 24px; display: flex; flex-direction: column; border-top: 4px solid var(--accent-cyan); background: linear-gradient(180deg, rgba(6, 182, 212, 0.08) 0%, transparent 100%);">
+                    <h3 style="font-family:var(--font-display); font-size:18px; font-weight:700; color: var(--accent-cyan); margin-bottom:8px;">Global Developer Conference</h3>
+                    <p style="font-size: 12px; color: var(--color-text-secondary); margin-bottom: 16px;">Weeklong virtual festival (June 8-12) by Microsoft. Build practical AI skills across roles and earn perks.</p>
+                    
+                    <div style="display: flex; flex-direction: column; gap: 10px; overflow-y: auto; flex-grow: 1; max-height: 240px; padding-right: 4px;">
+                        <div class="glass-card" style="padding: 12px; border-left: 3px solid var(--accent-cyan); background: rgba(6, 182, 212, 0.02); display: flex; flex-direction: column; gap: 4px;">
+                            <div style="display:flex; justify-content:space-between; align-items:center;">
+                                <span style="font-weight: 700; font-size: 13px; color: var(--color-text-primary);">Role-Based Tracks</span>
+                                <span style="font-size: 9px; font-weight: 700; padding: 2px 6px; border-radius: 4px; background: rgba(6, 182, 212, 0.15); color: var(--accent-cyan);">Curated</span>
+                            </div>
+                            <p style="font-size: 11px; color: var(--color-text-secondary);">Business Professionals, Technical Roles, Career & Leadership.</p>
+                        </div>
+                        <div class="glass-card" style="padding: 12px; border-left: 3px solid var(--accent-emerald); background: rgba(16, 185, 129, 0.02); display: flex; flex-direction: column; gap: 4px;">
+                            <div style="display:flex; justify-content:space-between; align-items:center;">
+                                <span style="font-weight: 700; font-size: 13px; color: var(--color-text-primary);">Certification Perks</span>
+                                <span style="font-size: 9px; font-weight: 700; padding: 2px 6px; border-radius: 4px; background: rgba(16, 185, 129, 0.15); color: var(--accent-emerald);">Reward</span>
+                            </div>
+                            <p style="font-size: 11px; color: var(--color-text-secondary);">Complete playlists to unlock free Microsoft Certification exams.</p>
+                        </div>
+                        <div class="glass-card" style="padding: 12px; border-left: 3px solid var(--accent-amber); background: rgba(245, 158, 11, 0.02); display: flex; flex-direction: column; gap: 4px;">
+                            <div style="display:flex; justify-content:space-between; align-items:center;">
+                                <span style="font-weight: 700; font-size: 13px; color: var(--color-text-primary);">Agents League Hackathon</span>
+                                <span style="font-size: 9px; font-weight: 700; padding: 2px 6px; border-radius: 4px; background: rgba(245, 158, 11, 0.15); color: var(--accent-amber);">Ends June 14</span>
+                            </div>
+                            <p style="font-size: 11px; color: var(--color-text-secondary);">Esports-inspired competition to build and submit AI agents.</p>
+                        </div>
+                    </div>
+                    
+                    <a href="https://aiskillsnavigator.microsoft.com/events/AISF2026" target="_blank" class="action-button primary" style="margin-top: 16px;">
+                        Register / Enter Festival
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= VENTURE LAB TAB ================= -->
+        <section id="prof-ventures-tab" class="tab-section">
+            <div style="margin-bottom: 8px;">
+                <h2 style="font-family: var(--font-display); font-size: 32px; font-weight: 800;">Initiatives</h2>
+                <p style="color: var(--color-text-secondary); font-size: 14px; margin-top: 4px;">Compare high-leverage AI opportunities with unglamorous, low-competition cash-flow businesses. Stop chasing trends; execute on fundamentals.</p>
+            </div>
+
+            <!-- Controls -->
+            <div class="flex flex-wrap gap-2 mb-4" style="background: rgba(255,255,255,0.02); padding: 8px; border-radius: 12px; border: 1px solid var(--border-color); width: fit-content;">
+                <button onclick="filterVentures('all')" id="venture-btn-all" class="px-4 py-1.5 rounded-lg text-xs font-semibold border transition-all bg-cyber-teal border-cyber-teal/30 text-white shadow-sm shadow-cyber-teal/10">All Ventures</button>
+                <button onclick="filterVentures('ai')" id="venture-btn-ai" class="px-4 py-1.5 rounded-lg text-xs font-semibold border border-slate-800 text-slate-400 bg-transparent hover:text-white hover:border-slate-700 transition-all">🤖 AI Ventures</button>
+                <button onclick="filterVentures('boring')" id="venture-btn-boring" class="px-4 py-1.5 rounded-lg text-xs font-semibold border border-slate-800 text-slate-400 bg-transparent hover:text-white hover:border-slate-700 transition-all">🧽 Boring Businesses</button>
+            </div>
+
+            <div class="grid-2">
+                <!-- Venture List -->
+                <div class="glass-panel" style="padding: 24px; display: flex; flex-direction: column; height: 440px;">
+                    <h3 style="font-family:var(--font-display); font-size:18px; font-weight:700; margin-bottom:16px;">Opportunity Matrix</h3>
+                    <div style="overflow-y: auto; flex-grow: 1; padding-right: 4px;" id="venture-list">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <!-- Analysis Chart -->
+                <div class="glass-panel" style="padding: 24px; display: flex; flex-direction: column; height: 440px;">
+                    <h3 style="font-family:var(--font-display); font-size:18px; font-weight:700; margin-bottom:4px;">Risk vs. Complexity Mapping</h3>
+                    <p style="font-size: 11px; color: var(--color-text-secondary); margin-bottom: 12px;">Visualizing the barrier to entry (X) versus operational leverage/scale potential (Y).</p>
+                    <div class="chart-container" style="position: relative; width: 100%; flex-grow: 1;">
+                        <canvas id="ventureChart"></canvas>
+                    </div>
+                    <div style="margin-top: 16px; padding: 12px; background: rgba(245, 158, 11, 0.05); border: 1px solid rgba(245, 158, 11, 0.2); border-radius: 8px; font-size: 11px; color: var(--accent-amber); line-height: 1.4;">
+                        <strong>Insight:</strong> The "Pooper Scooper" business hit $3M/year precisely because the barrier to entry is just willingness, avoiding tech saturation. Conversely, AI Voice Agents (Tier S) solve massive drop-off costs for local services.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= LEVERAGE & SYSTEMS TAB ================= -->
+        <section id="prof-systems-tab" class="tab-section">
+             <div style="margin-bottom: 8px;">
+                <h2 style="font-family: var(--font-display); font-size: 32px; font-weight: 800;">Tools & Resources</h2>
+                <p style="color: var(--color-text-secondary); font-size: 14px; margin-top: 4px;">Communication architecture, silent thought, and structural advantages hidden in plain sight.</p>
+            </div>
+
+            <div class="grid-2">
+                <!-- Influence & Mindset -->
+                <div style="display: flex; flex-direction: column; gap: 24px;">
+                    <div class="glass-panel" style="padding: 24px; border-top: 4px solid var(--accent-indigo); background: linear-gradient(135deg, rgba(99, 102, 241, 0.03) 0%, transparent 100%);">
+                        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+                            <div class="user-avatar" style="width: 36px; height: 36px; font-size: 14px; background: var(--accent-indigo);">🗣️</div>
+                            <h3 style="font-family:var(--font-display); font-size:18px; font-weight:700;">17 Architectures of Influence</h3>
+                        </div>
+                        <p style="font-size: 13px; color: var(--color-text-secondary); line-height: 1.6; margin-bottom: 12px;">From Socrates to Cicero, top communicators don't argue harder; they use sentence structures that act as machines in the listener's brain, preloading conclusions.</p>
+                        <ul style="list-style-type: none; display: flex; flex-direction: column; gap: 8px; font-size: 12px; color: var(--color-text-muted);">
+                            <li style="display: flex; gap: 8px; align-items: flex-start;"><i data-lucide="check" class="w-4 h-4 text-cyber-indigo flex-shrink-0" style="margin-top: 2px;"></i> Make their neurology do the work.</li>
+                            <li style="display: flex; gap: 8px; align-items: flex-start;"><i data-lucide="check" class="w-4 h-4 text-cyber-indigo flex-shrink-0" style="margin-top: 2px;"></i> Ask questions that make logic eat itself.</li>
+                            <li style="display: flex; gap: 8px; align-items: flex-start;"><i data-lucide="check" class="w-4 h-4 text-cyber-indigo flex-shrink-0" style="margin-top: 2px;"></i> People reject pressure, but accept what they think is their own idea.</li>
+                        </ul>
+                    </div>
+
+                    <div class="glass-panel" style="padding: 24px; border-top: 4px solid var(--accent-rose); background: linear-gradient(135deg, rgba(239, 68, 68, 0.03) 0%, transparent 100%);">
+                         <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+                            <div class="user-avatar" style="width: 36px; height: 36px; font-size: 14px; background: var(--accent-rose);">📂</div>
+                            <h3 style="font-family:var(--font-display); font-size:18px; font-weight:700;">The Architecture of Dialogue</h3>
+                         </div>
+                         <p style="font-size: 13px; color: var(--color-text-secondary); line-height: 1.6; margin-bottom: 12px;">Stop building complex AI frameworks. Use "Interpretable Context Methodology" (plain text and folders).</p>
+                         <div class="glass-card" style="font-family: var(--font-mono); font-size: 11px; color: var(--accent-cyan); padding: 12px; background: rgba(3, 7, 18, 0.6); overflow-x: auto; line-height: 1.6; margin-bottom: 12px;">
+                             &gt; Agent_Instructions.md<br>
+                             &gt; Folder: Skills/<br>
+                             &nbsp;&nbsp;&nbsp;&nbsp;- write_email.md<br>
+                             &nbsp;&nbsp;&nbsp;&nbsp;- analyze_data.md
+                         </div>
+                         <p style="font-size: 12px; color: var(--color-text-muted); line-height: 1.5;">The agent navigates structure rather than getting lost in rigid multi-agent code. Plain text and folders allow prompt context to scale cleanly.</p>
+                    </div>
+                </div>
+
+                <!-- 101 Free Services Accordion -->
+                <div class="glass-panel" style="padding: 24px; display: flex; flex-direction: column;">
+                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+                        <div class="user-avatar" style="width: 36px; height: 36px; font-size: 14px; background: var(--accent-emerald);">🏛️</div>
+                        <h3 style="font-family:var(--font-display); font-size:18px; font-weight:700;">Hidden Government Leverage</h3>
+                    </div>
+                    <p style="font-size: 12px; color: var(--color-text-secondary); line-height: 1.5; margin-bottom: 16px;">Americans ignore 101 free services. Stop paying for what is already funded by taxes.</p>
+                    
+                    <div style="display: flex; flex-direction: column; gap: 10px; overflow-y: auto; flex-grow: 1; max-height: 380px; padding-right: 4px;">
+                        <!-- Accordion Items -->
+                        <details class="glass-card group" style="padding: 12px; background: rgba(255,255,255,0.01); border: 1px solid var(--border-color); border-radius: 8px; cursor: pointer;">
+                            <summary class="font-semibold text-slate-200 group-hover:text-cyber-teal outline-none" style="font-size: 13px; list-style: none; display: flex; justify-content: space-between; align-items: center;">
+                                <span>1. VITA (Free Tax Prep)</span>
+                                <span style="font-size: 10px; color: var(--color-text-muted);">Expand ▾</span>
+                            </summary>
+                            <p style="font-size: 11px; color: var(--color-text-secondary); margin-top: 8px; padding-left: 8px; border-left: 2px solid var(--accent-indigo); line-height: 1.5;">If you make under $69,000, trained IRS volunteers prepare and file your taxes for free. Millions pay sketchy sites instead.</p>
+                        </details>
+                        <details class="glass-card group" style="padding: 12px; background: rgba(255,255,255,0.01); border: 1px solid var(--border-color); border-radius: 8px; cursor: pointer;">
+                            <summary class="font-semibold text-slate-200 group-hover:text-cyber-teal outline-none" style="font-size: 13px; list-style: none; display: flex; justify-content: space-between; align-items: center;">
+                                <span>2. MissingMoney.com</span>
+                                <span style="font-size: 10px; color: var(--color-text-muted);">Expand ▾</span>
+                            </summary>
+                            <p style="font-size: 11px; color: var(--color-text-secondary); margin-top: 8px; padding-left: 8px; border-left: 2px solid var(--accent-indigo); line-height: 1.5;">$70 Billion in unclaimed money (old checks, refunds) sits with states. 1 in 10 Americans has cash waiting. Takes 30 seconds to check.</p>
+                        </details>
+                        <details class="glass-card group" style="padding: 12px; background: rgba(255,255,255,0.01); border: 1px solid var(--border-color); border-radius: 8px; cursor: pointer;">
+                            <summary class="font-semibold text-slate-200 group-hover:text-cyber-teal outline-none" style="font-size: 13px; list-style: none; display: flex; justify-content: space-between; align-items: center;">
+                                <span>3. Hill-Burton Hospitals</span>
+                                <span style="font-size: 10px; color: var(--color-text-muted);">Expand ▾</span>
+                            </summary>
+                            <p style="font-size: 11px; color: var(--color-text-secondary); margin-top: 8px; padding-left: 8px; border-left: 2px solid var(--accent-indigo); line-height: 1.5;">~130 hospitals are legally required to treat low-income patients for free, an agreement from 1940s federal construction funding.</p>
+                        </details>
+                        <details class="glass-card group" style="padding: 12px; background: rgba(255,255,255,0.01); border: 1px solid var(--border-color); border-radius: 8px; cursor: pointer;">
+                            <summary class="font-semibold text-slate-200 group-hover:text-cyber-teal outline-none" style="font-size: 13px; list-style: none; display: flex; justify-content: space-between; align-items: center;">
+                                <span>101. Constituent Services</span>
+                                <span style="font-size: 10px; color: var(--color-text-muted);">Expand ▾</span>
+                            </summary>
+                            <p style="font-size: 11px; color: var(--color-text-secondary); margin-top: 8px; padding-left: 8px; border-left: 2px solid var(--accent-indigo); line-height: 1.5;">Every member of Congress has staff whose entire job is to cut red tape for you (passports, VA claims, Social Security). Free, immediate, and effective.</p>
+                        </details>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= SECURITY TAB (WA) ================= -->
+        <section id="security-tab" class="tab-section">
+            
+            <!-- WA Dashboard Summary Card -->
+            <div class="p-8 rounded-3xl bg-slate-900/50 border border-slate-800/80 shadow-2xl relative overflow-hidden mb-8">
+                <div class="absolute top-0 right-0 p-8 opacity-5 pointer-events-none">
+                    <i data-lucide="shield" class="w-48 h-48 text-cyber-teal"></i>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-center relative z-10">
+                    <div class="md:col-span-2">
+                        <div class="flex items-center gap-3 mb-3">
+                            <div class="p-2.5 bg-cyber-teal/10 rounded-xl border border-cyber-teal/30 text-cyber-teal">
+                                <i data-lucide="shield-check" class="w-6 h-6"></i>
+                            </div>
+                            <h1 class="text-3xl font-outfit font-extrabold text-white tracking-tight">WA Hardening Auditor <span class="text-xs bg-cyber-teal/20 text-cyber-teal px-2 py-0.5 rounded-full ml-2">v2.1.0</span></h1>
+                        </div>
+                        <p class="text-slate-400 mb-6 max-w-xl text-sm leading-relaxed">
+                            Audit and track compliance against the <strong>WA Hardening Baseline</strong>. This dashboard synchronizes with the standalone <code>wa.ps1</code> suite, utilizing <strong>SmartRUN</strong> orchestration to detect configuration drift and apply surgical remediation.
+                        </p>
+
+                        <!-- WinAuto Core Quick Execution -->
+                        <div class="mb-8 p-5 rounded-2xl bg-slate-950/40 border border-cyber-teal/30 shadow-inner group transition-all hover:border-cyber-teal/60">
+                            <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+                                <div class="flex items-center gap-3.5">
+                                    <div class="p-2.5 bg-cyber-teal/10 rounded-xl text-cyber-teal group-hover:scale-110 transition-transform">
+                                        <i data-lucide="zap" class="w-6 h-6"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="text-sm font-bold text-white uppercase tracking-wider">WA Standalone Execution</h3>
+                                        <p class="text-[11px] text-slate-500">Run the enterprise-grade interactive dashboard & maintenance suite.</p>
+                                    </div>
+                                </div>
+                                <div class="flex gap-2 w-full sm:w-auto flex-1 max-w-md">
+                                    <div class="relative flex-1 group/input">
+                                        <input type="text" id="winauto-core-cmd" readonly value="npm install -g my-automation-cli" 
+                                               class="w-full pl-3 pr-3 py-2.5 bg-slate-900/80 border border-slate-800 rounded-xl text-cyber-tealLight font-mono text-[10px] focus:outline-none focus:border-cyber-teal/40 transition-all">
+                                        <div class="absolute inset-0 rounded-xl bg-cyber-teal/5 opacity-0 group-hover/input:opacity-100 pointer-events-none transition-opacity"></div>
+                                    </div>
+                                    <button onclick="copyWinAutoCore()" class="px-5 py-2.5 rounded-xl bg-cyber-teal hover:bg-teal-700 text-white font-extrabold text-[11px] uppercase tracking-wider transition-all flex items-center gap-2 shadow-lg shadow-cyber-teal/10 whitespace-nowrap">
+                                        <i data-lucide="copy" class="w-4 h-4"></i>
+                                        Copy
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex flex-col gap-4 mb-4">
+                            <!-- Large Centered Run System Scan Button -->
+                            <div class="flex justify-center">
+                                <button onclick="openScanModal()" class="flex items-center justify-center gap-2.5 px-8 py-3.5 w-full md:w-2/3 rounded-2xl bg-cyber-teal hover:bg-teal-600 text-white font-extrabold text-xs tracking-widest uppercase transition-all shadow-xl shadow-cyber-teal/20 glow-button">
+                                    <i data-lucide="scan" class="w-5 h-5"></i>
+                                    Run System Scan
+                                </button>
+                            </div>
+                            
+                            <!-- Secondary buttons side-by-side -->
+                            <div class="flex flex-wrap justify-center gap-3">
+                                <button onclick="generateScript()" class="flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-cyber-tealLight hover:text-white font-bold text-xs tracking-wide uppercase transition-all shadow-md">
+                                    <i data-lucide="terminal" class="w-4 h-4"></i>
+                                    Generate Core Hardening Script
+                                </button>
+                                <button onclick="resetProgress()" class="flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-900 border border-slate-800 text-slate-400 hover:text-white font-bold text-xs uppercase transition-all">
+                                    <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
+                                    Reset
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Compliance Gauge Circle -->
+                    <div class="flex flex-col items-center justify-center border-t md:border-t-0 md:border-l border-slate-800/80 pt-6 md:pt-0 md:pl-8">
+                        <div class="relative w-36 h-36 flex items-center justify-center">
+                            <svg class="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
+                                <circle class="text-slate-800" stroke-width="8" stroke="currentColor" fill="transparent" r="40" cx="50" cy="50" />
+                                <circle id="compliance-ring" class="text-cyber-teal transition-all duration-500 ease-in-out" stroke-width="8" stroke-dasharray="251.2" stroke-dashoffset="251.2" stroke-linecap="round" stroke="currentColor" fill="transparent" r="40" cx="50" cy="50" />
+                            </svg>
+                            <div class="absolute flex flex-col items-center justify-center text-center">
+                                <span id="compliance-percent" class="text-3xl font-outfit font-extrabold text-white">0%</span>
+                                <span class="text-[10px] font-mono tracking-wider text-slate-500 uppercase font-bold">Secure</span>
+                            </div>
+                        </div>
+                        <div class="mt-4 text-center flex flex-col items-center gap-1.5">
+                            <div>
+                                <span class="text-xs text-slate-500 font-bold uppercase tracking-widest">Status Assessment:</span>
+                                <div id="compliance-rating" class="text-sm font-extrabold font-outfit mt-1 text-cyber-rose">Vulnerable Default</div>
+                            </div>
+                            <div id="reboot-pending-counter" class="text-[10px] text-cyber-amberLight font-bold uppercase tracking-wider bg-cyber-amber/10 border border-cyber-amber/20 px-2 py-0.5 rounded-full inline-flex items-center gap-1 hidden">
+                                <i data-lucide="alert-triangle" class="w-3 h-3 text-cyber-amber"></i>
+                                <span id="reboot-pending-count">0</span> Reboot(s) Pending
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Network Perimeter & Ergonomics Cards -->
+            <div class="grid-2 mb-8">
+                <!-- RoboShadow Network Perimeter Sync -->
+                <div class="glass-panel" style="padding: 24px;">
+                    <h3 style="font-family:var(--font-display); font-size:20px; font-weight:700; margin-bottom:16px; display:flex; align-items:center; gap:8px;">
+                        <i data-lucide="globe" class="w-5 h-5 text-cyber-teal"></i> Network &amp; Perimeter (RoboShadow)
+                    </h3>
+                    <p style="font-size:12px; color:var(--color-text-secondary); line-height:1.5; margin-bottom:16px;">
+                        Latest scan data synced from the RoboShadow vCSO Agent and external web port checks.
+                    </p>
+                    <div style="display:flex; flex-direction:column; gap:12px;">
+                        <div class="routine-item" style="cursor:default; background: rgba(16,185,129,0.02); border-color: rgba(16,185,129,0.2);">
+                            <div style="width: 8px; height: 8px; border-radius: 50%; background: var(--accent-emerald); box-shadow: 0 0 8px var(--accent-emerald); flex-shrink:0;"></div>
+                            <div style="display:flex; flex-direction:column; gap:2px; flex:1;">
+                                <span style="font-size: 14px; font-weight: 600;">External Gateway (Verizon 5G)</span>
+                                <span style="font-size: 11px; color: var(--color-text-secondary);">IP: 97.251.85.48 | 0 Critical CVEs | Port 4567 (ISP Mgmt Only)</span>
+                            </div>
+                            <span style="font-size:10px; font-weight:700; padding:2px 8px; border-radius:20px; background:var(--accent-emerald-glow); color:var(--accent-emerald);">SECURE</span>
+                        </div>
+                        <div class="routine-item" style="cursor:default; background: rgba(16,185,129,0.02); border-color: rgba(16,185,129,0.2);">
+                            <div style="width: 8px; height: 8px; border-radius: 50%; background: var(--accent-emerald); box-shadow: 0 0 8px var(--accent-emerald); flex-shrink:0;"></div>
+                            <div style="display:flex; flex-direction:column; gap:2px; flex:1;">
+                                <span style="font-size: 14px; font-weight: 600;">Local Endpoint (HQLTC-ITS000)</span>
+                                <span style="font-size: 11px; color: var(--color-text-secondary);">IP: 192.168.1.159 | 0 Critical CVEs | 3 Open Ports (FW Active)</span>
+                            </div>
+                            <span style="font-size:10px; font-weight:700; padding:2px 8px; border-radius:20px; background:var(--accent-emerald-glow); color:var(--accent-emerald);">SECURE</span>
+                        </div>
+                        <div class="routine-item" style="cursor:default; background: rgba(16,185,129,0.02); border-color: rgba(16,185,129,0.2);">
+                            <div style="width: 8px; height: 8px; border-radius: 50%; background: var(--accent-emerald); box-shadow: 0 0 8px var(--accent-emerald); flex-shrink:0;"></div>
+                            <div style="display:flex; flex-direction:column; gap:2px; flex:1;">
+                                <span style="font-size: 14px; font-weight: 600;">"The Batphone" (IoT/Mobile)</span>
+                                <span style="font-size: 11px; color: var(--color-text-secondary);">IP: 192.168.1.152 | 0 Critical CVEs | 0 Open Ports Exposed</span>
+                            </div>
+                            <span style="font-size:10px; font-weight:700; padding:2px 8px; border-radius:20px; background:var(--accent-emerald-glow); color:var(--accent-emerald);">SECURE</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dark Web & Identity Monitoring -->
+                <div class="glass-panel" style="padding: 24px;">
+                    <h3 style="font-family:var(--font-display); font-size:20px; font-weight:700; margin-bottom:16px; display:flex; align-items:center; gap:8px;">
+                        <i data-lucide="eye" class="w-5 h-5 text-cyber-rose"></i> Dark Web Monitoring (RoboShadow)
+                    </h3>
+                    <p style="font-size:12px; color:var(--color-text-secondary); line-height:1.5; margin-bottom:16px;">
+                        Tracking data leaks and compromised accounts from known breaches.
+                    </p>
+                    <div style="display:flex; flex-direction:column; gap:12px;">
+                        <div class="glass-card" style="border-left: 4px solid var(--accent-rose); background: rgba(239,68,68,0.03); padding: 16px;">
+                            <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                                <div>
+                                    <div style="font-weight:700; font-size:14px; margin-bottom:4px; color:var(--color-text-primary);">ParkMobile.io Breach (Apr 2021)</div>
+                                    <div style="font-size:11px; color:var(--color-text-secondary);">Exposed: License Plate Data, Mobile Numbers</div>
+                                </div>
+                                <span style="font-size:10px; font-weight:700; padding:2px 8px; border-radius:20px; background:var(--accent-emerald-glow); color:var(--accent-emerald);">RESOLVED</span>
+                            </div>
+                            <div style="margin-top: 12px; font-size: 12px; color: var(--color-text-muted); border-top: 1px solid var(--border-color); padding-top: 8px;">
+                                <strong>Note:</strong> User account deleted manually. No further action required.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dashboard Access Security & Password Reset Settings -->
+            <div class="glass-panel mb-8" style="padding: 24px;">
+                <h3 style="font-family:var(--font-display); font-size:20px; font-weight:700; margin-bottom:16px; display:flex; align-items:center; gap:8px;">
+                    <i data-lucide="key-round" class="w-5 h-5 text-cyber-teal"></i> Dashboard Access Security
+                </h3>
+                <p style="font-size:12px; color:var(--color-text-secondary); line-height:1.5; margin-bottom:20px;">
+                    Configure local access restrictions, update your unlock password, and establish recovery mechanisms (Security Question &amp; Recovery Key) to prevent lockouts.
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Change Password Form -->
+                    <div class="glass-card" style="padding: 20px; background: rgba(255, 255, 255, 0.01); border: 1px solid var(--border-color); border-radius: 16px;">
+                        <h4 class="text-sm font-bold text-white mb-4 uppercase tracking-wider flex items-center gap-2">
+                            <i data-lucide="lock" class="w-4 h-4 text-cyber-teal"></i> Change Password
+                        </h4>
+                        <div class="space-y-3">
+                            <div>
+                                <label class="block text-[10px] uppercase font-bold text-slate-400 mb-1">Current Password</label>
+                                <input type="password" id="sec-curr-pass" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white text-xs focus:outline-none focus:border-cyber-teal">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] uppercase font-bold text-slate-400 mb-1">New Password</label>
+                                <input type="password" id="sec-new-pass" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white text-xs focus:outline-none focus:border-cyber-teal">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] uppercase font-bold text-slate-400 mb-1">Confirm New Password</label>
+                                <input type="password" id="sec-conf-pass" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white text-xs focus:outline-none focus:border-cyber-teal">
+                            </div>
+                            <button onclick="changeAccessPassword()" class="w-full py-2 bg-cyber-teal hover:bg-teal-700 text-white font-extrabold text-[11px] uppercase tracking-wider rounded-xl transition-all shadow-md mt-2">Update Password</button>
+                            <div id="change-pass-msg" class="text-[11px] text-center mt-2 hidden"></div>
+                        </div>
+                    </div>
+
+                    <!-- Recovery Setup Form -->
+                    <div class="glass-card" style="padding: 20px; background: rgba(255, 255, 255, 0.01); border: 1px solid var(--border-color); border-radius: 16px;">
+                        <h4 class="text-sm font-bold text-white mb-4 uppercase tracking-wider flex items-center gap-2">
+                            <i data-lucide="key" class="w-4 h-4 text-cyber-teal"></i> Recovery Configuration
+                        </h4>
+                        <div class="space-y-3">
+                            <div>
+                                <label class="block text-[10px] uppercase font-bold text-slate-400 mb-1">Security Question</label>
+                                <select id="sec-question" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white text-xs focus:outline-none focus:border-cyber-teal">
+                                    <option value="pet">What was the name of your first pet?</option>
+                                    <option value="city">What city were you born in?</option>
+                                    <option value="school">What high school did you attend?</option>
+                                    <option value="car">What was the make and model of your first car?</option>
+                                    <option value="special">What is your favorite technical certification?</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-[10px] uppercase font-bold text-slate-400 mb-1">Your Answer</label>
+                                <input type="text" id="sec-answer" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white text-xs focus:outline-none focus:border-cyber-teal" placeholder="Answer is case-insensitive">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] uppercase font-bold text-slate-400 mb-1">Active Recovery Key</label>
+                                <div class="flex gap-2">
+                                    <input type="text" id="sec-recovery-key" readonly class="flex-1 px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-cyber-tealLight font-mono text-xs focus:outline-none" value="Loading...">
+                                    <button onclick="regenerateRecoveryKey()" class="px-3 py-2 bg-slate-900 border border-slate-800 hover:border-slate-700 text-slate-300 rounded-xl text-xs transition-colors flex items-center justify-center" title="Regenerate Key">
+                                        <i data-lucide="refresh-cw" class="w-4 h-4"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <button onclick="saveRecoverySettings()" class="w-full py-2 bg-cyber-teal hover:bg-teal-700 text-white font-extrabold text-[11px] uppercase tracking-wider rounded-xl transition-all shadow-md mt-2">Save Recovery Settings</button>
+                            <div id="save-recovery-msg" class="text-[11px] text-center mt-2 hidden"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Checklist Controls -->
+            <div class="flex flex-col sm:flex-row gap-4 items-center justify-between bg-slate-900/40 p-4 rounded-2xl border border-slate-800/40 mb-6">
+                <div class="relative w-full sm:max-w-xs">
+                    <i data-lucide="search" class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500"></i>
+                    <input type="text" id="search-input" oninput="filterControls()" placeholder="Search security checks..." class="w-full pl-10 pr-4 py-2 rounded-xl bg-slate-950 border border-slate-800/60 focus:outline-none focus:border-cyber-teal text-sm text-slate-200 placeholder-slate-500 transition-colors">
+                </div>
+                <div class="flex flex-wrap gap-2 w-full sm:w-auto justify-end">
+                    <button onclick="setFilter('all')" id="filter-btn-all" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold border transition-all bg-cyber-teal border-cyber-teal/30 text-white shadow-sm shadow-cyber-teal/10">All</button>
+                    <button onclick="setFilter('compliant')" id="filter-btn-compliant" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold border border-slate-800 text-slate-400 bg-transparent hover:text-white hover:border-slate-700 transition-all">Compliant</button>
+                    <button onclick="setFilter('pending')" id="filter-btn-pending" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold border border-slate-800 text-slate-400 bg-transparent hover:text-white hover:border-slate-700 transition-all">Pending</button>
+                </div>
+            </div>
+
+            <!-- Checklist Container -->
+            <div class="space-y-6" id="checklist-container">
+                <!-- Javascript will inject accordion items here -->
+            </div>
+        </section>
+
+        <!-- ================= ERGONOMICS TAB ================= -->
+        <section id="ergonomics-tab" class="tab-section">
+            <div style="margin-bottom: 24px;">
+                <h2 style="font-family: var(--font-display); font-size: 32px; font-weight: 800;">Physical Ergonomics</h2>
+                <p style="color: var(--color-text-secondary); font-size: 14px; margin-top: 4px;">Structured habits and guidelines to support physical health during prolonged workstation usage.</p>
+            </div>
+
+            <div class="glass-panel" style="padding: 24px; max-w: 600px; display:flex; flex-direction:column; gap:16px;">
+                <h3 style="font-family:var(--font-display); font-size:20px; font-weight:700;">Physical Ergonomics Check</h3>
+                <p style="font-size:12px; color:var(--color-text-secondary); line-height:1.5;">
+                    Securing the human hardware. Complete these checks before deep work blocks.
+                </p>
+                <div id="ergonomics-active-list" style="display:flex; flex-direction:column; gap:12px;">
+                    <div class="routine-item" onclick="toggleErgonomicsCheck(this)">
+                        <div class="checkbox-container"></div>
+                        <div style="display:flex; flex-direction:column; gap:2px;">
+                            <span style="font-size: 14px; font-weight: 600;">Screen Eye-Level Align</span>
+                            <span style="font-size: 11px; color: var(--color-text-secondary);">Top third of monitor at or slightly below eye level.</span>
+                        </div>
+                    </div>
+                    <div class="routine-item" onclick="toggleErgonomicsCheck(this)">
+                        <div class="checkbox-container"></div>
+                        <div style="display:flex; flex-direction:column; gap:2px;">
+                            <span style="font-size: 14px; font-weight: 600;">90-Degree Joint Rule</span>
+                            <span style="font-size: 11px; color: var(--color-text-secondary);">Elbows, hips, and knees bent at 90-degree angles.</span>
+                        </div>
+                    </div>
+                    <div class="routine-item" onclick="toggleErgonomicsCheck(this)">
+                        <div class="checkbox-container"></div>
+                        <div style="display:flex; flex-direction:column; gap:2px;">
+                            <span style="font-size: 14px; font-weight: 600;">Hourly Stretching Hook</span>
+                            <span style="font-size: 11px; color: var(--color-text-secondary);">Stand up and perform chest stretches.</span>
+                        </div>
+                    </div>
+                </div>
+
+                <details id="ergonomics-completed-section" style="margin-top: 8px; cursor: pointer;" class="group">
+                    <summary style="font-size: 11px; font-weight: 700; color: var(--color-text-muted); outline: none; margin-bottom: 6px; user-select: none;">📁 Completed Ergonomics</summary>
+                    <div id="ergonomics-completed-list" style="display:flex; flex-direction:column; gap:12px; margin-top: 4px;">
+                        <!-- Completed items move here -->
+                    </div>
+                </details>
+            </div>
+        </section>
+
+        <!-- ================= HABITS & ROUTINES TAB ================= -->
+        <section id="habits-tab" class="tab-section">
+            <div style="margin-bottom: 8px;">
+                <h2 style="font-family: var(--font-display); font-size: 32px; font-weight: 800;">Daily Focus &amp; Habits</h2>
+                <p style="color: var(--color-text-secondary); font-size: 14px; margin-top: 4px;">Structured operational routines to build professional and personal consistency.</p>
+            </div>
+
+            <div class="grid-2">
+                <div class="glass-panel" style="padding: 24px; display:flex; flex-direction:column; gap:20px;">
+                    <h3 style="font-family:var(--font-display); font-size:18px; font-weight:700;">Daily Routine Steps</h3>
+                    <div id="routines-container" style="display: flex; flex-direction: column; gap: 12px;"></div>
+                </div>
+
+                <div class="glass-panel" style="padding: 24px; display:flex; flex-direction:column; justify-content:center; align-items:center; gap:24px;">
+                    <h3 style="font-family:var(--font-display); font-size:18px; font-weight:700; text-align:center;">Routine Progress</h3>
+                    
+                    <div style="display: flex; align-items: center; justify-content: center; position: relative; width: 120px; height: 120px;">
+                        <svg style="transform: rotate(-90deg);" width="120" height="120">
+                            <circle style="fill: none; stroke: rgba(255, 255, 255, 0.05); stroke-width: 8;" cx="60" cy="60" r="52"></circle>
+                            <circle id="habit-progress-circle" style="fill: none; stroke: var(--accent-indigo); stroke-width: 8; stroke-linecap: round; transition: stroke-dashoffset 0.35s;" cx="60" cy="60" r="52" stroke-dasharray="326.72" stroke-dashoffset="326.72"></circle>
+                        </svg>
+                        <div style="position: absolute; font-family: var(--font-display); font-size: 20px; font-weight: 700; display: flex; flex-direction: column; align-items: center;">
+                            <span id="habit-percentage-text">0%</span>
+                        </div>
+                    </div>
+
+                    <button class="action-button secondary" onclick="resetRoutines()" style="width:auto; padding:8px 16px; font-size:12px;">
+                        Reset Daily Routines
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer Status -->
+        <div style="display: flex; justify-content: center; padding: 24px 0 12px 0;">
+            <div style="font-family: var(--font-mono); font-size: 10px; background: rgba(16,185,129,0.05); border: 1px solid rgba(16,185,129,0.15); padding: 4px 12px; border-radius: 20px; color: var(--accent-emerald); display: flex; align-items: center; gap: 6px;">
+                <span style="width:5px; height:5px; background:var(--accent-emerald); border-radius:50%;"></span>
+                <span>Updated: <span id="last-updated-label">—</span></span>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- WA Modals & Toasts -->
+    <div id="toast-container" class="fixed bottom-6 right-6 z-[100] flex flex-col gap-3"></div>
+
+    <!-- Confirmation Modal -->
+    <div id="confirm-modal" class="fixed inset-0 bg-black/80 flex items-center justify-center z-[110] hidden backdrop-blur-sm transition-opacity">
+        <div class="bg-slate-900 border border-slate-700 p-6 rounded-2xl max-w-sm w-full shadow-2xl">
+            <h3 class="text-white font-bold text-lg mb-2" id="confirm-title">Confirm Action</h3>
+            <p class="text-slate-400 text-sm mb-6" id="confirm-message">Are you sure you want to proceed?</p>
+            <div class="flex justify-end gap-3">
+                <button id="confirm-cancel" class="px-4 py-2 rounded-xl bg-slate-800 text-slate-300 hover:text-white border border-slate-700 hover:bg-slate-700 transition-colors text-sm font-semibold">Cancel</button>
+                <button id="confirm-ok" class="px-4 py-2 rounded-xl bg-cyber-rose text-white hover:bg-rose-600 transition-colors text-sm font-semibold shadow-lg shadow-rose-500/20">Confirm</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script Output Modal -->
+    <div id="script-modal" class="fixed inset-0 bg-black/75 flex items-center justify-center z-50 p-4 hidden backdrop-blur-sm">
+        <div class="w-full max-w-4xl bg-slate-950 border border-slate-800 rounded-3xl overflow-hidden flex flex-col max-h-[85vh] shadow-2xl">
+            <div class="p-6 border-b border-slate-900 flex justify-between items-center bg-slate-900/30">
+                <div class="flex items-center gap-2.5">
+                    <div class="p-2 bg-cyber-teal/10 rounded-lg border border-cyber-teal/30 text-cyber-teal">
+                        <i data-lucide="terminal" class="w-4 h-4"></i>
+                    </div>
+                    <div>
+                        <h3 id="modal-script-title" class="font-outfit font-extrabold text-white text-lg">Core Hardening Script</h3>
+                        <p id="modal-script-desc" class="text-xs text-slate-500 font-medium">PowerShell commands for the core baseline hardening targeting selected items.</p>
+                    </div>
+                </div>
+                <button onclick="closeModal()" class="p-2 rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-white border border-slate-850/30 transition-all">
+                    <i data-lucide="x" class="w-4 h-4"></i>
+                </button>
+            </div>
+            
+            <div class="p-6 overflow-y-auto flex-1 text-xs flex flex-col gap-6">
+                <div class="flex border-b border-slate-900 pb-2 gap-4">
+                    <button id="tab-hardening" onclick="setScriptMode('hardening')" class="px-4 py-2 rounded-xl text-xs font-semibold border transition-all bg-cyber-teal/20 border-cyber-teal text-white shadow-lg shadow-cyber-teal/20 glow-button flex items-center gap-2">
+                        <i data-lucide="shield" class="w-3.5 h-3.5"></i> Apply Hardening
+                    </button>
+                    <button id="tab-rollback" onclick="setScriptMode('rollback')" class="px-4 py-2 rounded-xl text-xs font-semibold border border-slate-800 text-slate-400 bg-transparent hover:text-white transition-all flex items-center gap-2">
+                        <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i> Revert Changes
+                    </button>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-5 gap-6">
+                    <div class="md:col-span-2 flex flex-col gap-3 max-h-[400px] overflow-y-auto pr-2 border-r border-slate-900">
+                        <div class="flex items-center justify-between pb-2 border-b border-slate-900">
+                            <span class="text-white font-bold text-xs uppercase tracking-wider">Select Controls</span>
+                            <div class="flex gap-2">
+                                <button onclick="toggleAllRemediation(true)" class="text-cyber-teal hover:underline text-[10px] font-semibold">All</button>
+                                <span class="text-slate-700">|</span>
+                                <button onclick="toggleAllRemediation(false)" class="text-slate-400 hover:underline text-[10px] font-semibold">Clear</button>
+                            </div>
+                        </div>
+                        <div id="remediation-selection-list" class="space-y-2"></div>
+                    </div>
+
+                    <div class="md:col-span-3 flex flex-col gap-3">
+                        <div class="bg-slate-900/60 p-4 rounded-xl border border-slate-900 relative flex-1 flex flex-col min-h-[300px]">
+                            <button onclick="copyGeneratedScript()" class="absolute top-3 right-3 flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-950 border border-slate-850 text-slate-400 hover:text-white transition-all text-[10px] font-bold uppercase z-10">
+                                <i data-lucide="copy" class="w-3 h-3"></i> Copy
+                            </button>
+                            <pre class="overflow-x-auto text-slate-300 max-h-[360px] leading-5 pr-8 whitespace-pre-wrap flex-1 font-mono text-[10px]" id="generated-script-box"></pre>
+                        </div>
+                        <div class="p-3 rounded-xl bg-cyber-amberGlow/5 border border-cyber-amber/10 flex gap-2.5 text-[11px] text-cyber-amberLight/90">
+                            <i data-lucide="alert-triangle" class="w-4 h-4 flex-shrink-0 text-cyber-amber mt-0.5"></i>
+                            <div id="script-warning-text">
+                                <strong class="font-bold">Warning:</strong> Run inside an elevated PowerShell 5.1+ session. Requires reboot.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scan System Modal -->
+    <div id="scan-modal" class="fixed inset-0 bg-black/75 flex items-center justify-center z-50 p-4 hidden backdrop-blur-sm">
+        <div class="w-full max-w-2xl bg-slate-950 border border-slate-800 rounded-3xl overflow-hidden flex flex-col max-h-[85vh] shadow-2xl">
+            <div class="p-6 border-b border-slate-900 flex justify-between items-center bg-slate-900/30">
+                <div class="flex items-center gap-2.5">
+                    <div class="p-2 bg-cyber-teal/10 rounded-lg border border-cyber-teal/30 text-cyber-teal">
+                        <i data-lucide="scan" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-outfit font-extrabold text-white">Automated System Audit</h3>
+                        <p class="text-slate-500 text-xs font-medium">Scan your Windows 11 machine via PowerShell</p>
+                    </div>
+                </div>
+                <button onclick="closeScanModal()" class="p-1.5 rounded-lg hover:bg-slate-900 text-slate-400 hover:text-white transition-colors">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            
+            <div class="p-6 overflow-y-auto space-y-6 text-sm text-slate-300 flex-1">
+                <!-- Step 1: Copy Command -->
+                <div class="space-y-2.5">
+                    <h4 class="text-white font-bold flex items-center gap-2">
+                        <span class="flex items-center justify-center w-5 h-5 rounded-full bg-cyber-teal/20 text-cyber-teal text-xs font-mono">1</span>
+                        Copy Scanner Command
+                    </h4>
+                    <p class="text-slate-400 text-xs leading-relaxed">This command downloads and executes the read-only WinAuto scanner to inspect local policy settings.</p>
+                    <div class="flex gap-2">
+                        <input type="text" id="scanner-command-input" readonly 
+                               class="flex-1 px-3 py-2 bg-slate-900 border border-slate-800 rounded-xl text-cyber-tealLight font-mono text-[10px] focus:outline-none">
+                        <button onclick="copyScannerCommand()" class="px-4 py-2 rounded-xl bg-cyber-teal hover:bg-teal-700 text-white font-extrabold text-[11px] uppercase tracking-wider transition-all flex items-center gap-1.5 shadow-md">
+                            <i data-lucide="copy" class="w-4 h-4"></i> Copy
+                        </button>
+                    </div>
+                </div>
+
+                <hr class="border-slate-900">
+
+                <!-- Step 2: Run in PowerShell -->
+                <div class="space-y-2">
+                    <h4 class="text-white font-bold flex items-center gap-2">
+                        <span class="flex items-center justify-center w-5 h-5 rounded-full bg-cyber-teal/20 text-cyber-teal text-xs font-mono">2</span>
+                        Run in PowerShell (Admin)
+                    </h4>
+                    <p class="text-slate-400 text-xs leading-relaxed">Open PowerShell as Administrator and paste the copied command. This will save a file named <code class="text-cyber-teal font-mono">posture_audit.json</code> to your Desktop and copy it to your clipboard.</p>
+                </div>
+
+                <hr class="border-slate-900">
+
+                <!-- Step 3: Import Results -->
+                <div class="space-y-3">
+                    <h4 class="text-white font-bold flex items-center gap-2">
+                        <span class="flex items-center justify-center w-5 h-5 rounded-full bg-cyber-teal/20 text-cyber-teal text-xs font-mono">3</span>
+                        Import Scan Results
+                    </h4>
+                    <p class="text-slate-400 text-xs leading-relaxed">Choose to either upload the generated report from your desktop or paste the JSON text directly below.</p>
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <!-- Dropzone file upload -->
+                        <div id="dropzone" class="border-2 border-dashed border-slate-800 hover:border-cyber-teal/40 rounded-2xl p-6 text-center cursor-pointer transition-colors flex flex-col items-center justify-center gap-2 min-h-[140px] bg-slate-950/20">
+                            <input type="file" id="file-input" class="hidden" accept=".json">
+                            <i data-lucide="upload-cloud" class="w-8 h-8 text-slate-500"></i>
+                            <span class="text-xs font-bold text-slate-350">Choose posture_audit.json</span>
+                            <span class="text-[10px] text-slate-500">or drag and drop here</span>
+                        </div>
+                        
+                        <!-- Paste area -->
+                        <div class="flex flex-col gap-2">
+                            <textarea id="json-paste-input" placeholder="Or paste scan JSON text here..." class="flex-1 w-full p-3 bg-slate-900 border border-slate-800 rounded-2xl text-slate-350 font-mono text-[10px] min-h-[100px] focus:outline-none focus:border-cyber-teal/30 resize-none"></textarea>
+                            <button onclick="applyPastedJson()" class="w-full py-2 rounded-xl bg-cyber-teal hover:bg-teal-700 text-white font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-1.5 shadow-md shadow-cyber-teal/10">
+                                <i data-lucide="check" class="w-3.5 h-3.5"></i>
+                                Apply Paste
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="data.js"></script>
+    <script src="app.js"></script>
+
+    <!-- Job Link Edit Modal -->
+    <div id="job-link-modal" style="display:none; position:fixed; inset:0; z-index:9999; align-items:center; justify-content:center; background:rgba(0,0,0,0.6); backdrop-filter:blur(4px);" onclick="if(event.target===this) closeJobLinkModal()">
+        <div style="background:var(--bg-surface-solid); border:1px solid var(--border-color); border-radius:20px; padding:32px; width:100%; max-width:420px; box-shadow:0 24px 48px rgba(0,0,0,0.4);">
+            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:20px;">
+                <div>
+                    <h3 id="job-link-modal-title" style="font-family:var(--font-display); font-size:16px; font-weight:800; color:var(--color-text-primary);">Edit Job Link</h3>
+                    <p style="font-size:12px; color:var(--color-text-secondary); margin-top:4px;">Paste the URL to the job posting.</p>
+                </div>
+                <button onclick="closeJobLinkModal()" style="background:none; border:none; color:var(--color-text-muted); cursor:pointer; font-size:20px; line-height:1;">&times;</button>
+            </div>
+            <input id="job-link-input" type="url" placeholder="https://company.com/jobs/..." onkeydown="if(event.key==='Enter') saveJobLink()" style="width:100%; padding:12px 14px; border-radius:10px; border:1px solid var(--border-color); background:var(--bg-card); color:var(--color-text-primary); font-family:var(--font-mono); font-size:13px; outline:none; margin-bottom:16px; transition:border-color 0.2s;" onfocus="this.style.borderColor='var(--accent-cyan)'" onblur="this.style.borderColor='var(--border-color)'">
+            <div style="display:flex; gap:10px;">
+                <button onclick="saveJobLink()" style="flex:1; padding:11px; border-radius:10px; background:var(--accent-cyan); color:#fff; border:none; font-weight:700; font-size:13px; cursor:pointer; transition:opacity 0.2s;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">Save Link</button>
+                <button onclick="closeJobLinkModal()" style="flex:1; padding:11px; border-radius:10px; background:var(--bg-card); color:var(--color-text-secondary); border:1px solid var(--border-color); font-weight:600; font-size:13px; cursor:pointer;">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    </div>
+</body>
+</html>
