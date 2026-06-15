@@ -9,6 +9,41 @@ const YourLifeOSData = {
     },
     
     // Active Projects & Tasks
+    
+    // Dashboard Layout Configuration
+    // Use this array to choose which tiles appear on your main dashboard
+    dashboardLayout: [
+        { type: "spotlight" },
+        { type: "pipeline" },
+        { type: "events" },
+        { type: "checklist", id: "email-management" },
+        { type: "checklist", id: "subscription-audit" }
+    ],
+
+    // Custom Checklists
+    checklists: [
+        {
+            id: "email-management",
+            title: "Email Management",
+            icon: "mail",
+            color: "var(--accent-indigo)",
+            items: [
+                { id: "email-1", label: "Inbox Zero Sweep", desc: "Archive or delegate all emails." },
+                { id: "email-2", label: "Unsubscribe Run", desc: "Remove 3 useless newsletters." }
+            ]
+        },
+        {
+            id: "subscription-audit",
+            title: "Subscription Audit",
+            icon: "credit-card",
+            color: "var(--accent-amber)",
+            items: [
+                { id: "sub-1", label: "Review Bank Statements", desc: "Identify unused recurring charges." }
+            ]
+        }
+    ],
+
+    // Active Projects & Tasks
     projects: [
         {
             id: "job-1",

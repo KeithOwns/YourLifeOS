@@ -1,3 +1,113 @@
+
+function renderDashboardLayout() {
+    if (!window.YourLifeOSData || !window.YourLifeOSData.dashboardLayout) return;
+    const container = document.getElementById('dynamic-dashboard-container');
+    if (!container) return;
+    
+    container.innerHTML = '';
+    
+    // We will build a 2-column grid for some items, but stack spotlights
+    let gridContainer = document.createElement('div');
+    gridContainer.className = 'grid-2';
+    gridContainer.style.gap = '16px';
+    
+    window.YourLifeOSData.dashboardLayout.forEach(tile => {
+        if (tile.type === 'spotlight') {
+            // Render Spotlight
+            const priorityProject = window.YourLifeOSData.projects.find(p => p.priority === 'high') || window.YourLifeOSData.projects[0];
+            if(priorityProject) {
+                const spotlightHtml = `
+                <div class="glass-card" style="padding: 12px 18px; border-left: 4px solid var(--accent-indigo); background: rgba(99, 102, 241, 0.05); margin-bottom: 4px; display: flex; flex-direction: column; gap: 8px; border-radius: 12px;">
+                    <div style="display: flex; align-items: center; justify-content: space-between;">
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <span style="font-size: 18px;">🔥</span>
+                            <div style="display: flex; flex-direction: column;">
+                                <span style="font-size: 13px; font-weight: 700; color: var(--color-text-primary);">Top Priority Project: ${priorityProject.title}</span>
+                                <span style="font-size: 11px; color: var(--color-text-secondary);">${priorityProject.description || ''}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="margin-top: 4px; font-size: 10px; display: flex; gap: 8px; border-top: 1px dashed rgba(255,255,255,0.05); padding-top: 4px; align-items: center;">
+                        ${priorityProject.url ? `<a href="${priorityProject.url}" target="_blank" style="color: var(--accent-cyan); text-decoration: none; display: flex; align-items: center; gap: 4px;">🌐 Project Link</a>` : ''}
+                    </div>
+                </div>`;
+                container.appendChild(document.createRange().createContextualFragment(spotlightHtml));
+            }
+        } 
+        else if (tile.type === 'pipeline') {
+            const pipelineHtml = `
+            <div class="glass-panel" style="padding: 16px; border-top: 4px solid var(--accent-cyan); background: linear-gradient(180deg, rgba(6, 182, 212, 0.08) 0%, rgba(6, 182, 212, 0.02) 100%);">
+                <h3 style="font-family:var(--font-display); font-size:16px; font-weight:700; margin-bottom:12px; display:flex; align-items:center; gap:6px;">
+                    <i data-lucide="briefcase" class="w-4 h-4 text-cyber-teal"></i> Strategic Pipeline
+                </h3>
+                <div style="display:flex; flex-direction:column; gap:8px;">
+                    <div id="priority-job-container" style="display:flex; flex-direction:column; gap:8px;"></div>
+                    <details class="group" open>
+                        <summary style="font-size: 11px; font-weight: 700; color: var(--accent-cyan); outline: none; margin-bottom: 6px; cursor: pointer;">📂 Active Projects</summary>
+                        <div id="open-jobs-container" style="display:flex; flex-direction:column; gap:8px; margin-top:4px;"></div>
+                    </details>
+                    <details>
+                        <summary style="font-size: 11px; font-weight: 700; color: var(--accent-emerald); outline: none; margin-bottom: 6px; cursor: pointer;">✅ Pending Review</summary>
+                        <div id="submitted-jobs-container" style="display:flex; flex-direction:column; gap:8px; margin-top:4px;"></div>
+                    </details>
+                    <details>
+                        <summary style="font-size: 11px; font-weight: 700; color: var(--accent-amber); outline: none; margin-bottom: 6px; cursor: pointer;">🛡️ Secondary Initiatives</summary>
+                        <div id="secondary-jobs-container" style="display:flex; flex-direction:column; gap:8px; margin-top:4px;"></div>
+                    </details>
+                    <details>
+                        <summary style="font-size: 11px; font-weight: 700; color: var(--color-text-muted); outline: none; margin-bottom: 6px; cursor: pointer;">🛠️ Backlog Tasks</summary>
+                        <div id="backup-jobs-container" style="display:flex; flex-direction:column; gap:8px; margin-top:4px;"></div>
+                    </details>
+                    <details>
+                        <summary style="font-size: 11px; font-weight: 700; color: var(--accent-rose); outline: none; margin-bottom: 6px; cursor: pointer;">📁 Completed / Archived</summary>
+                        <div id="closed-jobs-container" style="display:flex; flex-direction:column; gap:10px; margin-top:6px;"></div>
+                    </details>
+                </div>
+            </div>`;
+            gridContainer.appendChild(document.createRange().createContextualFragment(pipelineHtml));
+        }
+        else if (tile.type === 'events') {
+            const eventsHtml = `
+            <div class="glass-panel" style="padding: 16px; border-top: 4px solid var(--accent-indigo); background: linear-gradient(180deg, rgba(99, 102, 241, 0.08) 0%, rgba(99, 102, 241, 0.02) 100%);">
+                <h3 style="font-family:var(--font-display); font-size:16px; font-weight:700; margin-bottom:12px; display:flex; align-items:center; gap:6px;">
+                    <i data-lucide="calendar" class="w-4 h-4 text-cyber-indigo"></i> Professional Network
+                </h3>
+                <div id="events-container" style="display: flex; flex-direction: column; gap: 12px;"></div>
+            </div>`;
+            gridContainer.appendChild(document.createRange().createContextualFragment(eventsHtml));
+        }
+        else if (tile.type === 'checklist') {
+            const checklist = window.YourLifeOSData.checklists.find(c => c.id === tile.id);
+            if (checklist) {
+                let itemsHtml = checklist.items.map((item, idx) => `
+                    <div class="routine-item" onclick="this.classList.toggle('checked')">
+                        <div class="checkbox-container"></div>
+                        <div style="display:flex; flex-direction:column; gap:2px;">
+                            <span style="font-size: 13px; font-weight: 600;">${item.label}</span>
+                            <span style="font-size: 10px; color: var(--color-text-secondary);">${item.desc}</span>
+                        </div>
+                    </div>
+                `).join('');
+                
+                const listHtml = `
+                <div class="glass-panel" style="padding: 16px; border-top: 4px solid ${checklist.color}; background: linear-gradient(180deg, rgba(255, 255, 255, 0.03) 0%, transparent 100%);">
+                    <h3 style="font-family:var(--font-display); font-size:16px; font-weight:700; margin-bottom:12px; display:flex; align-items:center; gap:6px;">
+                        <i data-lucide="${checklist.icon}" class="w-4 h-4" style="color: ${checklist.color}"></i> ${checklist.title}
+                    </h3>
+                    <div style="display: grid; grid-template-columns: 1fr; gap: 12px;">
+                        ${itemsHtml}
+                    </div>
+                </div>`;
+                gridContainer.appendChild(document.createRange().createContextualFragment(listHtml));
+            }
+        }
+    });
+    
+    if (gridContainer.children.length > 0) {
+        container.appendChild(gridContainer);
+    }
+}
+
 // --- CUSTOM NOTIFICATION SYSTEM ---
         function showToast(message, type = 'success') {
             const container = document.getElementById('toast-container');
@@ -818,6 +928,7 @@
 
         // Initialization
         window.addEventListener('DOMContentLoaded', () => {
+            renderDashboardLayout();
             renderProjects();
             renderEvents();
             renderHabits();
